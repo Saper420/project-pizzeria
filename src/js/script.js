@@ -69,10 +69,8 @@
     }
     renderInMenu(){
       const thisProduct = this;
-      console.log('tutaj >>>>',thisProduct);
       const generatedHTML = templates.menuProduct(thisProduct.data);
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
-      console.log('renderInMenu:', thisProduct.element);
       const menuContainer = document.querySelector(select.containerOf.menu);
       menuContainer.appendChild(thisProduct.element);
     }
@@ -84,15 +82,14 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      console.log('tutaj >>>>',thisProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
     initAccordion(){
       const thisProduct = this;
       const wraper = thisProduct.element;
       thisProduct.accordionTrigger.addEventListener('click', function(event){
         event.preventDefault();
-        const activeWrap = document.querySelector(select.all.menuProductsActive);
-        console.log('activeWrap',activeWrap);         
+        const activeWrap = document.querySelector(select.all.menuProductsActive);      
         if(activeWrap && activeWrap != wraper){
           activeWrap.classList.remove('active');
         }
@@ -120,26 +117,30 @@
     processOrder(){
       const thisProduct = this;
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('forma>>>>>>>>>>',formData);
       let price = thisProduct.data.price;
       for(let paramId in thisProduct.data.params) {
         const param = thisProduct.data.params[paramId];
-        console.log(paramId, param);
         for(let optionId in param.options) {
           const option = param.options[optionId];
-          console.log(optionId, option);
+          const costam = '.'+ thisProduct.data.params[paramId].label.toLowerCase() +'-' + optionId;
+          const image = document.querySelector(costam);
           if(formData[paramId] && formData[paramId].includes(optionId)) {
             if(!option.default) {
               price = price + option.price;
             }
+            if(image){
+              image.classList.add(classNames.menuProduct.imageVisible);
+            }
           } else {
             if(option.default) {
-              price = price - option.price;
+              price = price - option.price;              
+            }
+            if(image){
+              image.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
         }
       }
-      console.log(thisProduct);
       thisProduct.priceElem.innerHTML = price;
     }
   }
