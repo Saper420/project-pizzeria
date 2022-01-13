@@ -47,7 +47,6 @@ class CartProduct{
   }
   remove(){
     const thisCartProduct = this;
-    console.log('dziala');
     const event = new CustomEvent('remove',{
       bubbles: true,
       detail: {
