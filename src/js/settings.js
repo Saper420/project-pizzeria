@@ -101,7 +101,7 @@ export const settings = {
     defaultDeliveryFee: 20,
   },
   db: {
-    url: '//' + window.location.hostname + (window.location.hostname=='localhost' ? ':3131' : ''),
+    url: '//' + 'pizzeria-server99.herokuapp.com',
     products: 'products',
     orders: 'orders',
     booking: 'bookings',
